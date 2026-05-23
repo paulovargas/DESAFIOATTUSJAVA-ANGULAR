@@ -52,8 +52,7 @@ public class Debtor {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "debt_id")
+    @OneToMany(mappedBy = "debtor")
     private List<Debt> debts;
 
 

@@ -51,6 +51,6 @@ public class Client {
     @Column(nullable = false)
     private String phone;
 
-    @OneToMany(mappedBy = "debtors")
-    private List<Debtor> debtors;
+    @OneToMany(mappedBy = "debtor")
+    private List<Debt> debts;
 }
