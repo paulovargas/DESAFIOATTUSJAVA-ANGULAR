@@ -1,0 +1,96 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: debt_recovery_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data_dev:/var/lib/postgresql/data
+      - ./java-web-spring-api-attus/database/backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d debt_recovery_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  restore:
+    image: postgres:15
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    environment:
+      PGPASSWORD: postgres
+    volumes:
+      - ./java-web-spring-api-attus/database/backups:/backups
+    command: >
+      sh -c "
+      if [ -f /backups/debt_recovery_db.backup ]; then
+        echo 'Restaurando backup /backups/debt_recovery_db.backup...';
+        pg_restore -h postgres -U postgres -d debt_recovery_db --clean --if-exists --no-owner --no-privileges /backups/debt_recovery_db.backup;
+        echo 'Restore finalizado.';
+      else
+        echo 'Backup nao encontrado em /backups/debt_recovery_db.backup. Restore ignorado.';
+      fi
+      "
+
+  backup:
+    image: postgres:15
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: always
+    environment:
+      PGPASSWORD: postgres
+    volumes:
+      - ./java-web-spring-api-attus/database/backups:/backups
+    command: >
+      sh -c "
+      while true; do
+        echo 'Gerando backup...';
+        pg_dump -h postgres -U postgres -d debt_recovery_db -Fc -f /backups/debt_recovery_db.backup.tmp &&
+        mv /backups/debt_recovery_db.backup.tmp /backups/debt_recovery_db.backup &&
+        echo 'Backup atualizado em /backups/debt_recovery_db.backup';
+        sleep 60;
+      done
+      "
+
+  backend:
+    image: maven:3.9.9-eclipse-temurin-11
+    working_dir: /workspace/java-web-spring-api-attus
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/debt_recovery_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    volumes:
+      - ./java-web-spring-api-attus:/workspace/java-web-spring-api-attus
+      - maven_cache:/root/.m2
+    ports:
+      - "8080:8080"
+    command: sh -c "mvn spring-boot:run"
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /workspace/web-app-attus
+    depends_on:
+      - backend
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./web-app-attus:/workspace/web-app-attus
+      - frontend_node_modules:/workspace/web-app-attus/node_modules
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+
+volumes:
+  pg_data_dev:
+  maven_cache:
+  frontend_node_modules:

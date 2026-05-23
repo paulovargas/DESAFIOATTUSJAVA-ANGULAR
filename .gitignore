@@ -1,0 +1,17 @@
+#################################
+# BACKEND - JAVA / MAVEN
+#################################
+
+java-web-spring-api-attus/target/
+*.log
+*.class
+*.jar
+*.war
+
+#################################
+# OS
+#################################
+
+.DS_Store
+Thumbs.db
+java-web-spring-api-attus/database/backups/debt_recovery_db.backup
