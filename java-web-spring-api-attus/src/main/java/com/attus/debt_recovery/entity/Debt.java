@@ -3,6 +3,7 @@ package com.attus.debt_recovery.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal; // Import BigDecimal
 
 @Entity
 @Table(name = "debts")
@@ -21,7 +22,7 @@ public class Debt {
     private String description;
 
     @Column(nullable = false)
-    private Double amount;
+    private BigDecimal amount; // Changed from Double to BigDecimal
 
     @Column(nullable = false)
     private java.time.LocalDate dueDate;
