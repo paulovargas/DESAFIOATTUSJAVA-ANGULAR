@@ -39,7 +39,17 @@ public class ClientService {
         Client existing = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
 
-        existing.setCompanyName(dto.getName());
+        existing.setCompanyName(dto.getCompanyName());
+        existing.setCnpj(dto.getCnpj());
+        existing.setBillingStreet(dto.getBillingStreet());
+        existing.setBillingNumber(dto.getBillingNumber());
+        existing.setBillingDistrict(dto.getBillingDistrict());
+        existing.setBillingCity(dto.getBillingCity());
+        existing.setBillingState(dto.getBillingState());
+        existing.setBillingZipCode(dto.getBillingZipCode());
+        existing.setEmail(dto.getEmail());
+        existing.setContactName(dto.getContactName());
+        existing.setPhone(dto.getPhone());
 
         return mapper.toDTO(clientRepository.save(existing));
     }

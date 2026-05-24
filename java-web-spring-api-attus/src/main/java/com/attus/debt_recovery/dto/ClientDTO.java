@@ -1,8 +1,6 @@
 package com.attus.debt_recovery.dto;
 
 import lombok.*;
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Builder
@@ -11,6 +9,15 @@ import java.math.BigDecimal;
 public class ClientDTO {
 
     private Long id;
-    private String name;
-    private BigDecimal amount;
+    private String companyName;
+    private String cnpj;
+    private String billingStreet;
+    private String billingNumber;
+    private String billingDistrict;
+    private String billingCity;
+    private String billingState;
+    private String billingZipCode;
+    private String email;
+    private String contactName;
+    private String phone;
 }

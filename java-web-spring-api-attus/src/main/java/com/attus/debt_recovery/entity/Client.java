@@ -51,6 +51,6 @@ public class Client {
     @Column(nullable = false)
     private String phone;
 
-    @OneToMany(mappedBy = "debtor")
+    @OneToMany(mappedBy = "client") // Corrected mappedBy from "debtor" to "client"
     private List<Debt> debts;
 }

@@ -25,7 +25,7 @@ public class ClientController {
     @PostMapping
     public ClientDTO create(@RequestBody @Valid ClientDTO dto){ return service.create(dto); }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public ClientDTO update(@PathVariable Long id, @RequestBody @Valid ClientDTO dto){
         return service.update(id, dto);
     }
