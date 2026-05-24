@@ -1,15 +1,24 @@
 <form class="debtor-form" [formGroup]="debtorForm" (ngSubmit)="onSubmit()">
+	<div class="col-md-6 mb-3">
+		<label for="cpfCnpj" class="form-label">CPF/CNPJ</label>
+		<input id="cpfCnpj" type="text" class="form-control" formControlName="cpfCnpj" (blur)="buscarCnpj()" />
+		@if (debtorForm.controls.cpfCnpj.touched && debtorForm.controls.cpfCnpj.hasError('cpfCnpj')) {
+			<small class="form-text text-danger">CPF/CNPJ invalido.</small>
+		}
+		@if (isLoadingCnpj) {
+			<small class="form-text">Buscando CNPJ...</small>
+		}
+		@if (cnpjError) {
+			<small class="form-text text-danger">{{ cnpjError }}</small>
+		}
+	</div>
+
 	<div class="mb-3">
 		<label for="name" class="form-label">Nome</label>
 		<input id="name" type="text" class="form-control" formControlName="name" />
 	</div>
 
 	<div class="row">
-		<div class="col-md-6 mb-3">
-			<label for="cpfCnpj" class="form-label">CPF/CNPJ</label>
-			<input id="cpfCnpj" type="text" class="form-control" formControlName="cpfCnpj" />
-		</div>
-
 		<div class="col-md-6 mb-3">
 			<label for="phone" class="form-label">Telefone</label>
 			<input id="phone" type="text" class="form-control" formControlName="phone" />
