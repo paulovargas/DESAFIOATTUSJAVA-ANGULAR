@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, inject } from '@angular/core/testing';
 import { BaseModalService } from './base-modal.service';
 
 describe('Service: BaseModal', () => {
@@ -14,3 +14,4 @@ describe('Service: BaseModal', () => {
     expect(service).toBeTruthy();
   }));
 });
+

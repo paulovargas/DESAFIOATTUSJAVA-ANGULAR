@@ -1,7 +1,8 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { BaseModalComponent } from './base-modal.component';
 
@@ -9,9 +10,10 @@ describe('BaseModalComponent', () => {
   let component: BaseModalComponent;
   let fixture: ComponentFixture<BaseModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BaseModalComponent ]
+      imports: [ BaseModalComponent ],
+      providers: [NgbActiveModal]
     })
     .compileComponents();
   }));
@@ -26,3 +28,4 @@ describe('BaseModalComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

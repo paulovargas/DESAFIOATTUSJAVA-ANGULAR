@@ -1,12 +1,13 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, inject } from '@angular/core/testing';
+import { DecimalPipe } from '@angular/common';
 import { CountryService } from './country.service';
 
 describe('Service: Country', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CountryService]
+      providers: [CountryService, DecimalPipe]
     });
   });
 
@@ -14,3 +15,4 @@ describe('Service: Country', () => {
     expect(service).toBeTruthy();
   }));
 });
+

@@ -1,7 +1,9 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { DebtPageComponent } from './debt-page.component';
 
@@ -9,9 +11,10 @@ describe('DebtPageComponent', () => {
   let component: DebtPageComponent;
   let fixture: ComponentFixture<DebtPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DebtPageComponent ]
+      imports: [ DebtPageComponent ],
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     })
     .compileComponents();
   }));
@@ -26,3 +29,4 @@ describe('DebtPageComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

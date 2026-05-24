@@ -1,11 +1,16 @@
-/* tslint:disable:no-unused-variable */
+import { NgbdSortableHeader } from './sortable.directive';
 
-import { TestBed, async } from '@angular/core/testing';
-import { Sortable.directiveDirective } from './sortable.directive';
+describe('NgbdSortableHeader', () => {
+  it('should rotate direction and emit sort event', () => {
+    const directive = new NgbdSortableHeader();
+    const events: unknown[] = [];
+    directive.sortable = 'name';
+    directive.sort.subscribe((event) => events.push(event));
 
-describe('Directive: Sortable.directive', () => {
-  it('should create an instance', () => {
-    const directive = new Sortable.directiveDirective();
-    expect(directive).toBeTruthy();
+    directive.rotate();
+
+    expect(directive.direction).toBe('asc');
+    expect(events).toEqual([{ column: 'name', direction: 'asc' }]);
   });
 });
+

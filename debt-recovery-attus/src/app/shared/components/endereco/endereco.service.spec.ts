@@ -1,12 +1,14 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, inject } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { EnderecoService } from './endereco.service';
 
 describe('Service: Endereco', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [EnderecoService]
+      providers: [EnderecoService, provideHttpClient(), provideHttpClientTesting()]
     });
   });
 
@@ -14,3 +16,4 @@ describe('Service: Endereco', () => {
     expect(service).toBeTruthy();
   }));
 });
+
