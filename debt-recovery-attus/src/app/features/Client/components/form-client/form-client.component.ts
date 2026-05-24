@@ -3,18 +3,23 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from '../../models/client.model';
 import { ClientService } from '../../services/client.service';
+import { EnderecoComponent } from '../../../../shared/components/endereco/endereco.component';
+import { CnpjService } from '../../../../shared/services/cnpj.service';
 
 @Component({
   selector: 'app-form-client',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, EnderecoComponent],
   templateUrl: './form-client.component.html',
   styleUrls: ['./form-client.component.css']
 })
 export class FormClientComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly clientService = inject(ClientService);
+  private readonly cnpjService = inject(CnpjService);
   private readonly activeModal = inject(NgbActiveModal);
+  isLoadingCnpj = false;
+  cnpjError = '';
 
   readonly clientForm = this.formBuilder.group({
     id: [''],
@@ -66,5 +71,37 @@ export class FormClientComponent {
       : this.clientService.create(client as Client);
 
     request$.subscribe(() => this.activeModal.close('saved'));
+  }
+
+  buscarCnpj() {
+    const cnpj = this.clientForm.controls.cnpj.value;
+    this.cnpjError = '';
+
+    if (!cnpj || this.cnpjService.limparCnpj(cnpj).length !== 14) {
+      return;
+    }
+
+    this.isLoadingCnpj = true;
+    this.cnpjService.buscarCnpj(cnpj).subscribe({
+      next: (empresa) => {
+        this.clientForm.patchValue({
+          cnpj: empresa.cnpj,
+          companyName: empresa.razaoSocial,
+          billingStreet: empresa.rua,
+          billingNumber: empresa.numero,
+          billingDistrict: empresa.bairro,
+          billingCity: empresa.cidade,
+          billingState: empresa.estado,
+          billingZipCode: empresa.cep,
+          email: empresa.email,
+          phone: empresa.telefone,
+        });
+        this.isLoadingCnpj = false;
+      },
+      error: (error: Error) => {
+        this.cnpjError = error.message || 'Nao foi possivel buscar o CNPJ.';
+        this.isLoadingCnpj = false;
+      },
+    });
   }
 }

@@ -28,7 +28,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@for (client of clients$ | async; track client.id) {
+					@for (client of filteredClients$ | async; track client.id) {
 						<tr>
 							<th scope="row">{{ client.id }}</th>
 							<td><ngb-highlight [result]="client.companyName" [term]="searchTerm" /></td>
@@ -50,7 +50,7 @@
 	</div>
 
 	<div class="client-pagination">
-		<ngb-pagination [collectionSize]="(clients$ | async)?.length || 0" [page]="1" [pageSize]="10">
+		<ngb-pagination [collectionSize]="(filteredClients$ | async)?.length || 0" [page]="1" [pageSize]="10">
 		</ngb-pagination>
 
 		<select class="form-select page-size-select" name="pageSize">

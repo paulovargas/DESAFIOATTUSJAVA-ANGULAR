@@ -3,11 +3,12 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Debtor } from '../../models/debtor.model';
 import { DebtorService } from '../../services/debtor.service';
+import { EnderecoComponent } from '../../../../shared/components/endereco/endereco.component';
 
 @Component({
   selector: 'app-form-debtor',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, EnderecoComponent],
   templateUrl: './form-debtor.component.html',
   styleUrls: ['./form-debtor.component.css']
 })

@@ -25,6 +25,17 @@
 	color: var(--text-muted);
 }
 
+.client-form .form-text {
+	color: var(--text-muted);
+	display: block;
+	font-size: 12px;
+	margin-top: 6px;
+}
+
+.client-form .text-danger {
+	color: #fca5a5 !important;
+}
+
 .form-actions {
 	display: flex;
 	justify-content: flex-end;
