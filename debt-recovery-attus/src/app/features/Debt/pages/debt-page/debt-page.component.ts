@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { BaseModalService } from '../../../../shared/components/modal/base-modal.service';
 import { FormDebtComponent } from '../../components/form-debt/form-debt.component';
+import { Debt } from '../../models/debt.model';
 import { DebtService } from '../../services/debt.service';
 
 @Component({
@@ -18,11 +19,11 @@ export class DebtPageComponent {
 
   readonly debts$ = this.refresh$.pipe(switchMap(() => this.debtService.findAll()));
 
-  openFormDebt() {
+  openFormDebt(debt?: Debt) {
     const modalRef = this.modalService.open(
       FormDebtComponent,
-      'Cadastro de Divida',
-      {}
+      debt ? 'Edicao de Divida' : 'Cadastro de Divida',
+      { debt }
     );
 
     modalRef.result

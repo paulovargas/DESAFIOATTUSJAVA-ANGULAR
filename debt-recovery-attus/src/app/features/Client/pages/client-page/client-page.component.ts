@@ -28,13 +28,11 @@ export class ClientPageComponent {
 		this.clients$ = this.refresh$.pipe(switchMap(() => this.clientService.findAll()));
 	}
 
-  openFormClient() {
+  openFormClient(client?: Client) {
 		const modalRef = this.modalService.open(
       FormClientComponent,
-      'Cadastro de Cliente',
-	  {
-		
-	  }
+      client ? 'Edicao de Cliente' : 'Cadastro de Cliente',
+	    { client }
     );
 
     modalRef.result

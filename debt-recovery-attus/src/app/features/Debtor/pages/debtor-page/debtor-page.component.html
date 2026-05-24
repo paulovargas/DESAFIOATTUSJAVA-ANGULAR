@@ -19,6 +19,7 @@
 					<th scope="col">Telefone</th>
 					<th scope="col">Cidade</th>
 					<th scope="col">D&iacute;vidas</th>
+					<th scope="col">A&ccedil;&otilde;es</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -31,10 +32,13 @@
 						<td>{{ debtor.phone }}</td>
 						<td>{{ debtor.billingCity }} - {{ debtor.billingState }}</td>
 						<td><span class="status-pill">{{ debtor.debts?.length || 0 }}</span></td>
+						<td>
+							<button type="button" class="btn table-action" (click)="openFormDebtor(debtor)">Editar</button>
+						</td>
 					</tr>
 				} @empty {
 					<tr>
-						<td colspan="7" class="empty-state">Nenhum devedor encontrado</td>
+						<td colspan="8" class="empty-state">Nenhum devedor encontrado</td>
 					</tr>
 				}
 			</tbody>

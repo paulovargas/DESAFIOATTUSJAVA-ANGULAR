@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from '../../../Client/models/client.model';
@@ -67,6 +67,26 @@ export class FormDebtComponent {
     debtor: this.formBuilder.control<Debtor>(this.emptyDebtor),
   });
 
+  @Input() set debt(debt: Debt | undefined) {
+    if (!debt) {
+      return;
+    }
+
+    this.debtForm.patchValue({
+      id: debt.id,
+      description: debt.description,
+      amount: debt.amount,
+      dueDate: debt.dueDate,
+      status: debt.status,
+      client: debt.client,
+      debtor: debt.debtor,
+    });
+  }
+
+  compareById(first: Client | Debtor, second: Client | Debtor) {
+    return first?.id === second?.id;
+  }
+
   onSubmit() {
     if (this.debtForm.invalid) {
       this.debtForm.markAllAsTouched();
@@ -87,7 +107,10 @@ export class FormDebtComponent {
       client: { id: debt.client.id },
       debtor: { id: debt.debtor.id },
     } as unknown as Debt;
+    const request$ = debt.id
+      ? this.debtService.update(debt.id, payload)
+      : this.debtService.create(payload);
 
-    this.debtService.create(payload).subscribe(() => this.activeModal.close('saved'));
+    request$.subscribe(() => this.activeModal.close('saved'));
   }
 }

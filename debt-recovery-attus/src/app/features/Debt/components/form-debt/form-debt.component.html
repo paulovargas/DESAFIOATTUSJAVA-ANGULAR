@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="col-md-6 mb-3">
 			<label for="client" class="form-label">Cliente</label>
-			<select id="client" class="form-select" formControlName="client">
+			<select id="client" class="form-select" formControlName="client" [compareWith]="compareById">
 				<option [ngValue]="emptyClient">Selecione um cliente</option>
 				@for (client of clients$ | async; track client.id) {
 					<option [ngValue]="client">{{ client.companyName }}</option>
@@ -17,7 +17,7 @@
 
 		<div class="col-md-6 mb-3">
 			<label for="debtor" class="form-label">Devedor</label>
-			<select id="debtor" class="form-select" formControlName="debtor">
+			<select id="debtor" class="form-select" formControlName="debtor" [compareWith]="compareById">
 				<option [ngValue]="emptyDebtor">Selecione um devedor</option>
 				@for (debtor of debtors$ | async; track debtor.id) {
 					<option [ngValue]="debtor">{{ debtor.name }}</option>
