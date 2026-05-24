@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,6 +17,10 @@ import java.math.BigDecimal;
 public class DebtDTO {
 
     private Long id;
-    private DebtorDTO debtor;
+    private String description;
     private BigDecimal amount;
+    private LocalDate dueDate;
+    private String status;
+    private ClientDTO client;
+    private DebtorDTO debtor;
 }

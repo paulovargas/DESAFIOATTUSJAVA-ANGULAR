@@ -38,7 +38,18 @@ public class DebtService {
     public DebtDTO update(Long id, DebtDTO dto){
         Debt debt = debtRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Debt not found"));
+        Debt mappedDebt = mapper.toEntity(dto);
+
+        debt.setDescription(dto.getDescription());
         debt.setAmount(dto.getAmount());
+        debt.setDueDate(dto.getDueDate());
+        debt.setStatus(dto.getStatus());
+        if (dto.getClient() != null) {
+            debt.setClient(mappedDebt.getClient());
+        }
+        if (dto.getDebtor() != null) {
+            debt.setDebtor(mappedDebt.getDebtor());
+        }
 
         return mapper.toDTO(debtRepository.save(debt));
     }
