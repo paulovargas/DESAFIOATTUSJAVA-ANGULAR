@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 
 import { FormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPagination } from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,8 @@ import { ClientService } from '../../services/client.service';
   styleUrls: ['./client-page.component.css'],
 })
 export class ClientPageComponent {
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+
   clients$: Observable<Client[]>;
   searchTerm = '';
 
@@ -23,16 +25,24 @@ export class ClientPageComponent {
     private clientService: ClientService,
     private modalService: BaseModalService,
   ) {
-		this.clients$ = this.clientService.findAll();
+		this.clients$ = this.refresh$.pipe(switchMap(() => this.clientService.findAll()));
 	}
 
   openFormClient() {
-		this.modalService.open(
+		const modalRef = this.modalService.open(
       FormClientComponent,
       'Cadastro de Cliente',
 	  {
 		
 	  }
     );
+
+    modalRef.result
+      .then((result) => {
+        if (result === 'saved') {
+          this.refresh$.next();
+        }
+      })
+      .catch(() => undefined);
 	}
 }

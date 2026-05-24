@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from '../../models/client.model';
+import { ClientService } from '../../services/client.service';
 
 @Component({
   selector: 'app-form-client',
@@ -11,6 +13,8 @@ import { Client } from '../../models/client.model';
 })
 export class FormClientComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly clientService = inject(ClientService);
+  private readonly activeModal = inject(NgbActiveModal);
 
   readonly clientForm = this.formBuilder.group({
     id: [''],
@@ -34,7 +38,7 @@ export class FormClientComponent {
       return;
     }
 
-    const client: Client = this.clientForm.getRawValue();
-    console.log(client);
+    const { id: _id, debts: _debts, ...client } = this.clientForm.getRawValue();
+    this.clientService.create(client as Client).subscribe(() => this.activeModal.close('saved'));
   }
 }
