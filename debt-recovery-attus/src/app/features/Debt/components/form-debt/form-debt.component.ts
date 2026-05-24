@@ -1,20 +1,32 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from '../../../Client/models/client.model';
+import { ClientService } from '../../../Client/services/client.service';
 import { Debtor } from '../../../Debtor/models/debtor.model';
+import { DebtorService } from '../../../Debtor/services/debtor.service';
 import { Debt } from '../../models/debt.model';
+import { DebtService } from '../../services/debt.service';
 
 @Component({
   selector: 'app-form-debt',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [AsyncPipe, ReactiveFormsModule],
   templateUrl: './form-debt.component.html',
   styleUrls: ['./form-debt.component.css']
 })
 export class FormDebtComponent {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly debtService = inject(DebtService);
+  private readonly clientService = inject(ClientService);
+  private readonly debtorService = inject(DebtorService);
+  private readonly activeModal = inject(NgbActiveModal);
 
-  private readonly emptyClient: Client = {
+  readonly clients$ = this.clientService.findAll();
+  readonly debtors$ = this.debtorService.findAll();
+
+  readonly emptyClient: Client = {
     id: '',
     companyName: '',
     cnpj: '',
@@ -30,7 +42,7 @@ export class FormDebtComponent {
     debts: [],
   };
 
-  private readonly emptyDebtor: Debtor = {
+  readonly emptyDebtor: Debtor = {
     id: 0,
     name: '',
     cpfCnpj: '',
@@ -61,7 +73,21 @@ export class FormDebtComponent {
       return;
     }
 
-    const debt: Debt = this.debtForm.getRawValue();
-    console.log(debt);
+    const debt = this.debtForm.getRawValue();
+    if (!debt.client.id || !debt.debtor.id) {
+      this.debtForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = {
+      description: debt.description,
+      amount: debt.amount,
+      dueDate: debt.dueDate,
+      status: debt.status,
+      client: { id: debt.client.id },
+      debtor: { id: debt.debtor.id },
+    } as unknown as Debt;
+
+    this.debtService.create(payload).subscribe(() => this.activeModal.close('saved'));
   }
 }
