@@ -196,3 +196,30 @@ body {
 .app-modal-window .btn-close:hover {
   opacity: 1;
 }
+
+.table-action {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+}
+
+.table-action:hover,
+.table-action:focus {
+  background: #6d28d9;
+  border-color: #6d28d9;
+  color: #fff;
+}
+
+.table-action.danger {
+  background: rgba(239, 68, 68, .16);
+  color: #fecaca;
+}
+
+.table-action.danger:hover,
+.table-action.danger:focus {
+  background: rgba(239, 68, 68, .24);
+  color: #fecaca;
+}
