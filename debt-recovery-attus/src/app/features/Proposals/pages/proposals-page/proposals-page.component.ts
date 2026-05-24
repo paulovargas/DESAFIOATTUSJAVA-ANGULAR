@@ -27,7 +27,7 @@ export class ProposalsPageComponent {
   readonly proposalForm = this.formBuilder.group({
     debtId: [0, [Validators.required, Validators.min(1)]],
     offeredAmount: [0, [Validators.required, Validators.min(0.01)]],
-    installments: [1, [Validators.required, Validators.min(1)]],
+    installments: [1, [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)]],
     status: ['EM_ANALISE', Validators.required],
     createdAt: [this.today(), Validators.required],
   });

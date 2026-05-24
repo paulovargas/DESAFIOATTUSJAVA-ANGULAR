@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Client } from '../../../Client/models/client.model';
 import { ClientService } from '../../../Client/services/client.service';
@@ -63,8 +63,8 @@ export class FormDebtComponent {
     amount: [0, [Validators.required, Validators.min(0.01)]],
     dueDate: ['', Validators.required],
     status: ['PENDENTE', Validators.required],
-    client: this.formBuilder.control<Client>(this.emptyClient),
-    debtor: this.formBuilder.control<Debtor>(this.emptyDebtor),
+    client: this.formBuilder.control<Client>(this.emptyClient, FormDebtComponent.selectedEntityValidator),
+    debtor: this.formBuilder.control<Debtor>(this.emptyDebtor, FormDebtComponent.selectedEntityValidator),
   });
 
   @Input() set debt(debt: Debt | undefined) {
@@ -94,11 +94,6 @@ export class FormDebtComponent {
     }
 
     const debt = this.debtForm.getRawValue();
-    if (!debt.client.id || !debt.debtor.id) {
-      this.debtForm.markAllAsTouched();
-      return;
-    }
-
     const payload = {
       description: debt.description,
       amount: debt.amount,
@@ -112,5 +107,9 @@ export class FormDebtComponent {
       : this.debtService.create(payload);
 
     request$.subscribe(() => this.activeModal.close('saved'));
+  }
+
+  private static selectedEntityValidator(control: AbstractControl): ValidationErrors | null {
+    return control.value?.id ? null : { required: true };
   }
 }

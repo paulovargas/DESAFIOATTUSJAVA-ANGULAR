@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -17,10 +20,17 @@ import java.time.LocalDate;
 public class DebtDTO {
 
     private Long id;
+    @NotBlank
     private String description;
+    @NotNull
+    @DecimalMin(value = "0.01")
     private BigDecimal amount;
+    @NotNull
     private LocalDate dueDate;
+    @NotBlank
     private String status;
+    @NotNull
     private ClientDTO client;
+    @NotNull
     private DebtorDTO debtor;
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,12 +35,12 @@ public class ProposalsController {
     }
 
     @PostMapping
-    public ProposalsDTO create(@RequestBody ProposalsDTO dto) {
+    public ProposalsDTO create(@RequestBody @Valid ProposalsDTO dto) {
         return service.create(dto);
     }
 
     @PutMapping("/{id}")
-    public ProposalsDTO update(@PathVariable Long id, @RequestBody ProposalsDTO dto) {
+    public ProposalsDTO update(@PathVariable Long id, @RequestBody @Valid ProposalsDTO dto) {
         return service.update(id, dto);
     }
 

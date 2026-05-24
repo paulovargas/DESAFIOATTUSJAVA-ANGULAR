@@ -5,6 +5,7 @@ import { Client } from '../../models/client.model';
 import { ClientService } from '../../services/client.service';
 import { EnderecoComponent } from '../../../../shared/components/endereco/endereco.component';
 import { CnpjService } from '../../../../shared/services/cnpj.service';
+import { cnpjValidator } from '../../../../shared/validators/document.validators';
 
 @Component({
   selector: 'app-form-client',
@@ -24,7 +25,7 @@ export class FormClientComponent {
   readonly clientForm = this.formBuilder.group({
     id: [''],
     companyName: ['', Validators.required],
-    cnpj: ['', Validators.required],
+    cnpj: ['', [Validators.required, cnpjValidator()]],
     billingStreet: [''],
     billingNumber: [''],
     billingDistrict: [''],
@@ -77,7 +78,7 @@ export class FormClientComponent {
     const cnpj = this.clientForm.controls.cnpj.value;
     this.cnpjError = '';
 
-    if (!cnpj || this.cnpjService.limparCnpj(cnpj).length !== 14) {
+    if (!cnpj || this.clientForm.controls.cnpj.invalid) {
       return;
     }
 

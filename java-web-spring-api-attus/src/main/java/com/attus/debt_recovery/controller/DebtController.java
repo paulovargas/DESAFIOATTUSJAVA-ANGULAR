@@ -6,6 +6,7 @@ import com.attus.debt_recovery.service.DebtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,10 +24,10 @@ public class DebtController {
     public DebtDTO findById(@PathVariable Long id){ return service.findById(id); }
 
     @PostMapping
-    public DebtDTO create(@RequestBody DebtDTO dto){ return service.create(dto); }
+    public DebtDTO create(@RequestBody @Valid DebtDTO dto){ return service.create(dto); }
 
     @PutMapping("/{id}")
-    public DebtDTO update(@PathVariable Long id, @RequestBody DebtDTO dto){
+    public DebtDTO update(@PathVariable Long id, @RequestBody @Valid DebtDTO dto){
         return service.update(id, dto);
     }
 

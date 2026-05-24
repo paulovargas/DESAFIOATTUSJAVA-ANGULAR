@@ -2,6 +2,9 @@
 	<div class="mb-3">
 		<label for="cnpj" class="form-label">CNPJ</label>
 		<input id="cnpj" type="text" class="form-control" formControlName="cnpj" (blur)="buscarCnpj()" />
+		@if (clientForm.controls.cnpj.touched && clientForm.controls.cnpj.hasError('cnpj')) {
+			<small class="form-text text-danger">CNPJ invalido.</small>
+		}
 		@if (isLoadingCnpj) {
 			<small class="form-text">Buscando CNPJ...</small>
 		}

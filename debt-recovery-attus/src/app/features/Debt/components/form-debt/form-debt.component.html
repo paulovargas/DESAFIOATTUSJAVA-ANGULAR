@@ -13,6 +13,9 @@
 					<option [ngValue]="client">{{ client.companyName }}</option>
 				}
 			</select>
+			@if (debtForm.controls.client.touched && debtForm.controls.client.invalid) {
+				<small class="form-text text-danger">Selecione um cliente.</small>
+			}
 		</div>
 
 		<div class="col-md-6 mb-3">
@@ -23,6 +26,9 @@
 					<option [ngValue]="debtor">{{ debtor.name }}</option>
 				}
 			</select>
+			@if (debtForm.controls.debtor.touched && debtForm.controls.debtor.invalid) {
+				<small class="form-text text-danger">Selecione um devedor.</small>
+			}
 		</div>
 	</div>
 
