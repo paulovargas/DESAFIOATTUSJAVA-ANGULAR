@@ -41,6 +41,15 @@ public class DebtorService {
                 .orElseThrow(() -> new RuntimeException("Debtor not found"));
 
         existing.setName(dto.getName());
+        existing.setCpfCnpj(dto.getCpfCnpj());
+        existing.setEmail(dto.getEmail());
+        existing.setPhone(dto.getPhone());
+        existing.setBillingStreet(dto.getBillingStreet());
+        existing.setBillingNumber(dto.getBillingNumber());
+        existing.setBillingDistrict(dto.getBillingDistrict());
+        existing.setBillingCity(dto.getBillingCity());
+        existing.setBillingState(dto.getBillingState());
+        existing.setBillingZipCode(dto.getBillingZipCode());
 
         return mapper.toDTO(debtorRepository.save(existing));
     }

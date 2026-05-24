@@ -48,10 +48,6 @@ public class Debtor {
     @Column(nullable = false)
     private String billingZipCode;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
-
     @OneToMany(mappedBy = "debtor")
     private List<Debt> debts;
 

@@ -14,4 +14,5 @@ public class DebtorAmountResponseDTO {
     private Long id;
     private String name;
     private BigDecimal amount;
+    private Number openDebts;
 }
