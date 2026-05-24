@@ -78,17 +78,17 @@ services:
 
   frontend:
     image: node:20-alpine
-    working_dir: /workspace/web-app-attus
+    working_dir: /workspace/debt-recovery-attus
     depends_on:
       - backend
     environment:
       CHOKIDAR_USEPOLLING: "true"
     volumes:
-      - ./web-app-attus:/workspace/web-app-attus
-      - frontend_node_modules:/workspace/web-app-attus/node_modules
+      - ./debt-recovery-attus:/workspace/debt-recovery-attus
+      - frontend_node_modules:/workspace/debt-recovery-attus/node_modules
     ports:
-      - "5173:5173"
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+      - "4200:4200"
+    command: sh -c "npm install && npm start -- --host 0.0.0.0 --port 4200"
 
 volumes:
   pg_data_dev:
