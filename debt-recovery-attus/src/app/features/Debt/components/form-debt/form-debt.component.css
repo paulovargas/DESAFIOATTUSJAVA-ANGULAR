@@ -1,0 +1,44 @@
+.debt-form {
+	color: var(--text-color);
+}
+
+.debt-form .form-label {
+	color: var(--text-muted);
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+.debt-form .form-control,
+.debt-form .form-select {
+	background: rgba(15, 17, 21, .85);
+	border-color: var(--border-color);
+	color: var(--text-color);
+}
+
+.debt-form .form-control:focus,
+.debt-form .form-select:focus {
+	background: rgba(15, 17, 21, .95);
+	border-color: var(--primary);
+	box-shadow: 0 0 0 .2rem rgba(124, 58, 237, .25);
+	color: var(--text-color);
+}
+
+.form-actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 8px;
+}
+
+.save-action {
+	background: var(--primary);
+	border-color: var(--primary);
+	color: #fff;
+	font-weight: 600;
+	min-width: 112px;
+}
+
+.save-action:hover {
+	background: #6d28d9;
+	border-color: #6d28d9;
+	color: #fff;
+}

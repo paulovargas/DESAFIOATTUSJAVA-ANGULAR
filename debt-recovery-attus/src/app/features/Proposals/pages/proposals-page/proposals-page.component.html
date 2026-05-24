@@ -1,0 +1,103 @@
+<section class="page-panel">
+	<div>
+		<h1>Propostas</h1>
+		<p>Acompanhe as propostas de negocia&ccedil;&atilde;o enviadas pelos devedores.</p>
+	</div>
+</section>
+
+<form class="proposal-form" [formGroup]="proposalForm" (ngSubmit)="saveProposal()">
+	<div class="row">
+		<div class="col-lg-4 mb-3">
+			<label for="debtId" class="form-label">D&iacute;vida</label>
+			<select id="debtId" class="form-select" formControlName="debtId">
+				<option [ngValue]="0">Selecione uma d&iacute;vida</option>
+				@for (debt of debts$ | async; track debt.id) {
+					<option [ngValue]="debt.id">
+						{{ debt.debtor.name }} - {{ debt.description }}
+					</option>
+				}
+			</select>
+		</div>
+
+		<div class="col-lg-2 mb-3">
+			<label for="offeredAmount" class="form-label">Proposta</label>
+			<input id="offeredAmount" type="number" min="0.01" step="0.01" class="form-control" formControlName="offeredAmount" />
+		</div>
+
+		<div class="col-lg-2 mb-3">
+			<label for="installments" class="form-label">Parcelas</label>
+			<input id="installments" type="number" min="1" class="form-control" formControlName="installments" />
+		</div>
+
+		<div class="col-lg-2 mb-3">
+			<label for="createdAt" class="form-label">Data</label>
+			<input id="createdAt" type="date" class="form-control" formControlName="createdAt" />
+		</div>
+
+		<div class="col-lg-2 mb-3">
+			<label for="status" class="form-label">Status</label>
+			<select id="status" class="form-select" formControlName="status">
+				<option value="EM_ANALISE">Em an&aacute;lise</option>
+				<option value="ACEITA">Aceita</option>
+				<option value="RECUSADA">Recusada</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-actions">
+		<button type="submit" class="btn page-action">{{ editingProposalId ? 'Atualizar' : 'Cadastrar' }}</button>
+		@if (editingProposalId) {
+			<button type="button" class="btn secondary-action" (click)="resetForm()">Cancelar</button>
+		}
+	</div>
+</form>
+
+<div class="data-table-panel">
+	<div class="table-responsive">
+		<table class="table data-table">
+			<thead>
+				<tr>
+					<th scope="col">C&oacute;digo</th>
+					<th scope="col">Devedor</th>
+					<th scope="col">D&iacute;vida</th>
+					<th scope="col">Valor Original</th>
+					<th scope="col">Proposta</th>
+					<th scope="col">Parcelas</th>
+					<th scope="col">Data</th>
+					<th scope="col">Status</th>
+					<th scope="col">A&ccedil;&otilde;es</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (proposal of proposals$ | async; track proposal.id) {
+					<tr>
+						<th scope="row">{{ proposal.id }}</th>
+						<td>{{ proposal.debtorName }}</td>
+						<td>{{ proposal.debtDescription }}</td>
+						<td>{{ proposal.originalAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+						<td>{{ proposal.offeredAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+						<td>{{ proposal.installments }}x</td>
+						<td>{{ proposal.createdAt }}</td>
+						<td>
+							<span
+								class="status-pill"
+								[class.accepted]="proposal.status === 'ACEITA'"
+								[class.rejected]="proposal.status === 'RECUSADA'"
+							>
+								{{ proposal.status }}
+							</span>
+						</td>
+						<td class="table-actions">
+							<button type="button" class="btn table-action" (click)="editProposal(proposal)">Editar</button>
+							<button type="button" class="btn table-action danger" (click)="deleteProposal(proposal.id)">Excluir</button>
+						</td>
+					</tr>
+				} @empty {
+					<tr>
+						<td colspan="9" class="empty-state">Nenhuma proposta encontrada</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

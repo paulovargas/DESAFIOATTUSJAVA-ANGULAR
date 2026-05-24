@@ -1,0 +1,65 @@
+<div class="layout">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      Debt Recovery
+    </div>
+
+    <div class="logo-svg">
+      <!-- <img src="images/coruja.png" alt=""> -->
+    </div>
+
+    <div ngbNav [(activeId)]="active" class="nav flex-column gap-2" orientation="vertical">
+
+      <ng-container ngbNavItem>
+
+        <button ngbNavLink routerLink="/home" routerLinkActive="active-link" class="menu-item">
+          Home
+        </button>
+
+      </ng-container>
+
+      <ng-container ngbNavItem>
+
+        <button ngbNavLink routerLink="/clients" routerLinkActive="active-link" class="menu-item">
+          Clientes
+        </button>
+
+      </ng-container>
+
+      <ng-container ngbNavItem>
+
+        <button ngbNavLink routerLink="/debtors" routerLinkActive="active-link" class="menu-item">
+          Devedores
+        </button>
+
+      </ng-container>
+
+      <ng-container ngbNavItem>
+
+        <button ngbNavLink routerLink="/debts" routerLinkActive="active-link" class="menu-item">
+          Dívidas
+        </button>
+
+      </ng-container>
+
+      <ng-container ngbNavItem>
+
+        <button ngbNavLink routerLink="/proposals" routerLinkActive="active-link" class="menu-item">
+          Propostas
+        </button>
+
+      </ng-container>
+
+    </div>
+
+  </aside>
+
+  <main class="content">
+
+    <router-outlet />
+
+  </main>
+
+</div>

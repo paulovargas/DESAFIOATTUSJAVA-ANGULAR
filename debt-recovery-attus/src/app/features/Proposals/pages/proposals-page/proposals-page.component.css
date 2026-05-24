@@ -1,0 +1,146 @@
+.page-panel {
+	align-items: center;
+	background: rgba(255, 255, 255, 0.096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .25);
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 20px;
+}
+
+.page-panel h1 {
+	color: var(--text-color);
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0 0 6px;
+}
+
+.page-panel p {
+	color: var(--text-muted);
+	margin: 0;
+}
+
+.data-table-panel {
+	background: rgba(255, 255, 255, 0.096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .25);
+	margin-top: 16px;
+	overflow: hidden;
+}
+
+.proposal-form {
+	background: rgba(255, 255, 255, 0.096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .25);
+	margin-top: 16px;
+	padding: 20px;
+}
+
+.proposal-form .form-label {
+	color: var(--text-muted);
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.form-actions {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+}
+
+.page-action,
+.secondary-action,
+.table-action {
+	border: 0;
+	font-weight: 700;
+}
+
+.page-action {
+	background: #7c3aed;
+	color: #fff;
+}
+
+.secondary-action {
+	background: rgba(255, 255, 255, .12);
+	color: var(--text-color);
+}
+
+.data-table {
+	--bs-table-bg: transparent;
+	--bs-table-border-color: var(--border-color);
+	--bs-table-color: var(--text-color);
+	--bs-table-hover-bg: rgba(255, 255, 255, .05);
+	--bs-table-hover-color: var(--text-color);
+	color: var(--text-color);
+	margin: 0;
+	vertical-align: middle;
+}
+
+.data-table thead th {
+	background: rgba(15, 17, 21, .78);
+	border-bottom: 1px solid var(--border-color);
+	color: var(--text-muted);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0;
+	padding: 14px 16px;
+	text-transform: uppercase;
+}
+
+.data-table tbody th,
+.data-table tbody td {
+	border-color: var(--border-color);
+	padding: 14px 16px;
+}
+
+.data-table tbody tr:hover {
+	background: rgba(255, 255, 255, .05);
+}
+
+.status-pill {
+	background: rgba(124, 58, 237, .18);
+	border: 1px solid rgba(124, 58, 237, .35);
+	border-radius: 999px;
+	color: var(--text-color);
+	display: inline-flex;
+	font-size: 12px;
+	font-weight: 700;
+	padding: 4px 10px;
+}
+
+.status-pill.accepted {
+	background: rgba(34, 197, 94, .16);
+	border-color: rgba(34, 197, 94, .35);
+}
+
+.status-pill.rejected {
+	background: rgba(239, 68, 68, .16);
+	border-color: rgba(239, 68, 68, .35);
+}
+
+.empty-state {
+	color: var(--text-muted);
+	padding: 28px 16px;
+	text-align: center;
+}
+
+.table-actions {
+	display: flex;
+	gap: 8px;
+}
+
+.table-action {
+	background: rgba(255, 255, 255, .12);
+	color: var(--text-color);
+	font-size: 12px;
+	padding: 4px 10px;
+}
+
+.table-action.danger {
+	background: rgba(239, 68, 68, .16);
+	color: #fecaca;
+}

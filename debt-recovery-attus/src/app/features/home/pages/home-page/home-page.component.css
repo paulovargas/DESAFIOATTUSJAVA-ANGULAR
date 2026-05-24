@@ -1,0 +1,237 @@
+.home-header {
+	align-items: center;
+	background: rgba(255, 255, 255, .096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .25);
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 20px;
+}
+
+.home-header h1,
+.panel-title h2 {
+	color: var(--text-color);
+	font-weight: 700;
+	margin: 0;
+}
+
+.home-header h1 {
+	font-size: 24px;
+}
+
+.home-header p,
+.panel-title span,
+.metric-card span,
+.metric-card small,
+.bar-row small,
+.funnel-item small {
+	color: var(--text-muted);
+	margin: 0;
+}
+
+.header-metric {
+	text-align: right;
+}
+
+.header-metric span,
+.header-metric strong {
+	display: block;
+}
+
+.header-metric strong {
+	color: #86efac;
+	font-size: 30px;
+	line-height: 1;
+}
+
+.metric-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	margin-top: 16px;
+}
+
+.metric-card,
+.chart-panel {
+	background: rgba(255, 255, 255, .096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .18);
+}
+
+.metric-card {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-height: 130px;
+	padding: 18px;
+}
+
+.metric-card strong {
+	color: var(--text-color);
+	font-size: 24px;
+	line-height: 1.1;
+}
+
+.metric-card.danger strong {
+	color: #fca5a5;
+}
+
+.metric-card.success strong {
+	color: #86efac;
+}
+
+.analysis-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+	margin-top: 16px;
+}
+
+.chart-panel {
+	padding: 20px;
+}
+
+.chart-panel.wide {
+	grid-column: 1 / -1;
+}
+
+.panel-title {
+	align-items: start;
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 18px;
+}
+
+.panel-title h2 {
+	font-size: 18px;
+}
+
+.bar-list {
+	display: grid;
+	gap: 16px;
+}
+
+.bar-row {
+	display: grid;
+	gap: 8px;
+}
+
+.bar-label {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.bar-label span,
+.bar-label strong,
+.funnel-item strong {
+	color: var(--text-color);
+}
+
+.bar-track {
+	background: rgba(255, 255, 255, .08);
+	border-radius: 999px;
+	height: 12px;
+	overflow: hidden;
+}
+
+.bar-fill {
+	background: #7c3aed;
+	border-radius: inherit;
+	height: 100%;
+	min-width: 0;
+}
+
+.bar-fill.vencido {
+	background: #ef4444;
+}
+
+.bar-fill.pendente {
+	background: #f59e0b;
+}
+
+.bar-fill.negociado,
+.bar-fill.recovered {
+	background: #22c55e;
+}
+
+.funnel {
+	display: grid;
+	gap: 14px;
+}
+
+.funnel-item {
+	align-items: center;
+	background: rgba(255, 255, 255, .06);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	display: flex;
+	gap: 12px;
+	padding: 12px;
+}
+
+.funnel-item strong,
+.funnel-item small {
+	display: block;
+}
+
+.status-dot {
+	background: #7c3aed;
+	border-radius: 999px;
+	height: 14px;
+	width: 14px;
+}
+
+.status-dot.aceita {
+	background: #22c55e;
+}
+
+.status-dot.recusada {
+	background: #ef4444;
+}
+
+.status-dot.em-analise {
+	background: #f59e0b;
+}
+
+.empty-analysis {
+	background: rgba(255, 255, 255, .096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	color: var(--text-muted);
+	padding: 28px;
+	text-align: center;
+}
+
+@media (max-width: 1100px) {
+	.metric-grid,
+	.analysis-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 720px) {
+	.home-header,
+	.panel-title {
+		display: block;
+	}
+
+	.header-metric {
+		margin-top: 16px;
+		text-align: left;
+	}
+
+	.metric-grid,
+	.analysis-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.chart-panel.wide {
+		grid-column: auto;
+	}
+}

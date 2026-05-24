@@ -1,0 +1,198 @@
+:root {
+
+  --primary: #7c3aed;
+
+  --dark: #0f1115;
+
+  --dark-light: #171a21;
+
+  --body-bg: #09090b;
+
+  --border-color: rgba(255,255,255,0.08);
+
+  --text-color: #ffffff;
+
+  --text-muted: #9ca3af;
+
+}
+
+body {
+
+  background: var(--body-bg);
+
+}
+
+.layout {
+
+  display: flex;
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(124,58,237,.12),
+      transparent 35%
+    ),
+    var(--body-bg);
+
+}
+
+.sidebar {
+
+  width: 260px;
+
+  padding: 24px;
+
+  background: rgba(15,17,21,.95);
+
+  border-right:
+    1px solid var(--border-color);
+
+  backdrop-filter: blur(12px);
+
+}
+
+.logo {
+
+  color: white;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+}
+
+.logo-svg {
+
+  display: flex;
+  justify-content: center;
+
+}
+
+.menu-item {
+
+  width: 100%;
+
+  height: 48px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: transparent;
+
+  color: var(--text-muted);
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 16px;
+
+  font-size: 15px;
+
+  transition: all .2s ease;
+
+}
+
+.menu-item:hover {
+
+  background: rgba(255,255,255,.05);
+
+  color: white;
+
+  transform: translateX(4px);
+
+}
+
+.menu-item.active-link {
+
+  background: rgba(255, 255, 255, 0.096);
+
+  color: white;
+
+  box-shadow:
+    0 0 24px rgba(124,58,237,.25);
+
+}
+
+.content {
+
+  flex: 1;
+
+  padding: 32px;
+
+  color: white;
+
+}
+
+.table {
+
+  background: rgba(255, 255, 255, 0.096);
+
+  --bs-table-bg: rgba(255, 255, 255, 0.096);
+
+  --bs-table-color: var(--bs-emphasis-color);
+
+  --bs-table-border-color: none;
+
+  --text-color: #ffffff;
+
+
+  color: white;
+
+  box-shadow:
+    0 0 24px rgba(124,58,237,.25);
+
+  border-radius: 14px;
+
+}
+
+.app-modal-backdrop {
+  background-color: #000;
+}
+
+.app-modal-backdrop.show {
+  opacity: .72;
+}
+
+.app-modal-window .modal-content {
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(124,58,237,.16),
+      transparent 42%
+    ),
+    var(--dark);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 0 32px rgba(124,58,237,.28);
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+.app-modal-window .modal-header {
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid var(--border-color);
+  padding: 18px 20px;
+}
+
+.app-modal-window .modal-title {
+  color: var(--text-color);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.app-modal-window .modal-body {
+  padding: 20px;
+}
+
+.app-modal-window .btn-close {
+  filter: invert(1) grayscale(100%);
+  opacity: .72;
+}
+
+.app-modal-window .btn-close:hover {
+  opacity: 1;
+}

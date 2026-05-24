@@ -1,0 +1,104 @@
+.page-panel {
+	align-items: center;
+	background: rgba(255, 255, 255, 0.096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .25);
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 20px;
+}
+
+.data-table-panel {
+	background: rgba(255, 255, 255, 0.096);
+	border: 1px solid var(--border-color);
+	border-radius: 14px;
+	box-shadow: 0 0 24px rgba(124, 58, 237, .25);
+	margin-top: 16px;
+	overflow: hidden;
+}
+
+.data-table {
+	--bs-table-bg: transparent;
+	--bs-table-border-color: var(--border-color);
+	--bs-table-color: var(--text-color);
+	--bs-table-hover-bg: rgba(255, 255, 255, .05);
+	--bs-table-hover-color: var(--text-color);
+	color: var(--text-color);
+	margin: 0;
+	vertical-align: middle;
+}
+
+.data-table thead th {
+	background: rgba(15, 17, 21, .78);
+	border-bottom: 1px solid var(--border-color);
+	color: var(--text-muted);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0;
+	padding: 14px 16px;
+	text-transform: uppercase;
+}
+
+.data-table tbody th,
+.data-table tbody td {
+	border-color: var(--border-color);
+	padding: 14px 16px;
+}
+
+.data-table tbody tr:hover {
+	background: rgba(255, 255, 255, .05);
+}
+
+.status-pill {
+	background: rgba(124, 58, 237, .18);
+	border: 1px solid rgba(124, 58, 237, .35);
+	border-radius: 999px;
+	color: var(--text-color);
+	display: inline-flex;
+	font-size: 13px;
+	font-weight: 700;
+	min-width: 32px;
+	justify-content: center;
+	padding: 3px 10px;
+}
+
+.empty-state {
+	color: var(--text-muted);
+	padding: 28px 16px;
+	text-align: center;
+}
+
+.page-panel h1 {
+	color: var(--text-color);
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0 0 6px;
+}
+
+.page-panel p {
+	color: var(--text-muted);
+	margin: 0;
+}
+
+.page-action {
+	background: var(--primary);
+	border-color: var(--primary);
+	color: #fff;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.page-action:hover {
+	background: #6d28d9;
+	border-color: #6d28d9;
+	color: #fff;
+}
+
+@media (max-width: 768px) {
+	.page-panel {
+		align-items: stretch;
+		flex-direction: column;
+	}
+}

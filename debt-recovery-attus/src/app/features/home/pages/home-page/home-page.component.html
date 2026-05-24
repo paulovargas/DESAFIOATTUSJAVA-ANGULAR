@@ -1,0 +1,109 @@
+@if (dashboard$ | async; as dashboard) {
+	<section class="home-header">
+		<div>
+			<h1>Dashboard</h1>
+			<p>Vis&atilde;o executiva da recupera&ccedil;&atilde;o de cr&eacute;ditos.</p>
+		</div>
+		<div class="header-metric">
+			<span>Taxa de recupera&ccedil;&atilde;o</span>
+			<strong>{{ dashboard.recoveryRate | number:'1.1-2' }}%</strong>
+		</div>
+	</section>
+
+	<section class="metric-grid">
+		<div class="metric-card">
+			<span>Valor total em d&iacute;vidas</span>
+			<strong>{{ dashboard.totalDebtAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+			<small>{{ dashboard.totalDebts }} d&iacute;vidas cadastradas</small>
+		</div>
+
+		<div class="metric-card danger">
+			<span>Valor vencido</span>
+			<strong>{{ dashboard.overdueDebtAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+			<small>{{ dashboard.overdueDebts }} d&iacute;vidas vencidas</small>
+		</div>
+
+		<div class="metric-card success">
+			<span>Recuperado</span>
+			<strong>{{ dashboard.recoveredAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+			<small>{{ dashboard.acceptedProposals }} propostas aceitas</small>
+		</div>
+
+		<div class="metric-card">
+			<span>Ticket m&eacute;dio</span>
+			<strong>{{ dashboard.averageDebtAmount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+			<small>{{ dashboard.totalProposals }} propostas registradas</small>
+		</div>
+	</section>
+
+	<section class="analysis-grid">
+		<div class="chart-panel">
+			<div class="panel-title">
+				<h2>D&iacute;vidas por status</h2>
+				<span>{{ dashboard.pendingDebts }} pendentes</span>
+			</div>
+
+			<div class="bar-list">
+				@for (item of dashboard.debtsByStatus; track item.label) {
+					<div class="bar-row">
+						<div class="bar-label">
+							<span>{{ item.label }}</span>
+							<strong>{{ item.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+						</div>
+						<div class="bar-track">
+							<div [class]="'bar-fill ' + statusClass(item.label)" [style.width.%]="barWidth(item)"></div>
+						</div>
+						<small>{{ item.count }} d&iacute;vidas | {{ item.percentage | number:'1.1-2' }}%</small>
+					</div>
+				}
+			</div>
+		</div>
+
+		<div class="chart-panel compact">
+			<div class="panel-title">
+				<h2>Funil de propostas</h2>
+				<span>{{ proposalAcceptanceRate(dashboard) | number:'1.1-2' }}% aceitas</span>
+			</div>
+
+			<div class="funnel">
+				@for (item of dashboard.proposalsByStatus; track item.label) {
+					<div class="funnel-item">
+						<span [class]="'status-dot ' + statusClass(item.label)"></span>
+						<div>
+							<strong>{{ item.label }}</strong>
+							<small>{{ item.count }} propostas | {{ item.percentage | number:'1.1-2' }}%</small>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+
+		<div class="chart-panel wide">
+			<div class="panel-title">
+				<h2>Recupera&ccedil;&atilde;o por devedor</h2>
+				<span>Baseado em propostas aceitas</span>
+			</div>
+
+			@if (dashboard.recoveryByDebtor.length) {
+				<div class="bar-list">
+					@for (item of dashboard.recoveryByDebtor; track item.label) {
+						<div class="bar-row">
+							<div class="bar-label">
+								<span>{{ item.label }}</span>
+								<strong>{{ item.amount | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+							</div>
+							<div class="bar-track">
+								<div class="bar-fill recovered" [style.width.%]="barWidth(item)"></div>
+							</div>
+							<small>{{ item.percentage | number:'1.1-2' }}% do recuperado</small>
+						</div>
+					}
+				</div>
+			} @else {
+				<div class="empty-analysis">Nenhuma proposta aceita para calcular recupera&ccedil;&atilde;o.</div>
+			}
+		</div>
+	</section>
+} @else {
+	<div class="empty-analysis">Carregando dashboard...</div>
+}
