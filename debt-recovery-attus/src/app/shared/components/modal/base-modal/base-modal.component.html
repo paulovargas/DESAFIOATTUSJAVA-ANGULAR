@@ -5,6 +5,6 @@
 
 <div class="modal-body">
 	@if (component) {
-		<ng-container [ngComponentOutlet]="component" />
+		<ng-container [ngComponentOutlet]="component" [ngComponentOutletInputs]="data" />
 	}
 </div>

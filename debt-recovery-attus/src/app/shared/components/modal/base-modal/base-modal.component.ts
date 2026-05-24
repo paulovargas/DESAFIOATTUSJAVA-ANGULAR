@@ -11,7 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class BaseModalComponent {
 	@Input() title = '';
 	@Input() component?: Type<unknown>;
-	@Input() data?: unknown;
+	@Input() data?: Record<string, unknown>;
 
 	constructor(public activeModal: NgbActiveModal) {}
 }
