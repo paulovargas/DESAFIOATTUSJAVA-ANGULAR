@@ -2,8 +2,11 @@
 	<div class="col-md-6 mb-3">
 		<label for="cpfCnpj" class="form-label">CPF/CNPJ</label>
 		<input id="cpfCnpj" type="text" class="form-control" formControlName="cpfCnpj" (blur)="buscarCnpj()" />
+		@if (debtorForm.controls.cpfCnpj.touched && debtorForm.controls.cpfCnpj.hasError('required')) {
+			<small class="form-text text-danger">CPF/CNPJ obrigat&oacute;rio.</small>
+		}
 		@if (debtorForm.controls.cpfCnpj.touched && debtorForm.controls.cpfCnpj.hasError('cpfCnpj')) {
-			<small class="form-text text-danger">CPF/CNPJ invalido.</small>
+			<small class="form-text text-danger">CPF/CNPJ inv&aacute;lido.</small>
 		}
 		@if (isLoadingCnpj) {
 			<small class="form-text">Buscando CNPJ...</small>
@@ -16,6 +19,9 @@
 	<div class="mb-3">
 		<label for="name" class="form-label">Nome</label>
 		<input id="name" type="text" class="form-control" formControlName="name" />
+		@if (debtorForm.controls.name.touched && debtorForm.controls.name.hasError('required')) {
+			<small class="form-text text-danger">Nome obrigat&oacute;rio.</small>
+		}
 	</div>
 
 	<div class="row">
@@ -28,6 +34,9 @@
 	<div class="mb-3">
 		<label for="email" class="form-label">E-mail</label>
 		<input id="email" type="email" class="form-control" formControlName="email" />
+		@if (debtorForm.controls.email.touched && debtorForm.controls.email.hasError('email')) {
+			<small class="form-text text-danger">E-mail inv&aacute;lido.</small>
+		}
 	</div>
 
 	<app-endereco />
@@ -35,4 +44,8 @@
 	<div class="form-actions">
 		<button type="submit" class="btn save-action">Salvar</button>
 	</div>
+
+	@if (saveError) {
+		<small class="form-text text-danger">{{ saveError }}</small>
+	}
 </form>

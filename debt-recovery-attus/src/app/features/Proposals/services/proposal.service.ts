@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../../../environments/environment';
 import { Proposal } from '../models/proposal.model';
 
 export type ProposalPayload = Pick<Proposal, 'debtId' | 'offeredAmount' | 'installments' | 'status' | 'createdAt'>;
 
 @Injectable({ providedIn: 'root' })
 export class ProposalService {
-  private readonly apiUrl = 'http://localhost:8080/api/proposals';
+  private readonly apiUrl = `${environment.apiBaseUrl}/proposals`;
 
   constructor(private readonly http: HttpClient) {}
 

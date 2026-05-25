@@ -37,13 +37,13 @@ export class EnderecoService {
     const cepLimpo = this.limparCep(cep);
 
     if (cepLimpo.length !== 8) {
-      return throwError(() => new Error('CEP deve conter 8 digitos.'));
+      return throwError(() => new Error('CEP deve conter 8 d\u00edgitos.'));
     }
 
     return this.http.get<ViaCepResponse>(`${this.viaCepUrl}/${cepLimpo}/json/`).pipe(
       map((response) => {
         if (response.erro) {
-          throw new Error('CEP nao encontrado.');
+          throw new Error('CEP n\u00e3o encontrado.');
         }
 
         return {

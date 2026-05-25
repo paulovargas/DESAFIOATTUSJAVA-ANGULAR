@@ -2,8 +2,11 @@
 	<div class="mb-3">
 		<label for="cnpj" class="form-label">CNPJ</label>
 		<input id="cnpj" type="text" class="form-control" formControlName="cnpj" (blur)="buscarCnpj()" />
+		@if (clientForm.controls.cnpj.touched && clientForm.controls.cnpj.hasError('required')) {
+			<small class="form-text text-danger">CNPJ obrigat&oacute;rio.</small>
+		}
 		@if (clientForm.controls.cnpj.touched && clientForm.controls.cnpj.hasError('cnpj')) {
-			<small class="form-text text-danger">CNPJ invalido.</small>
+			<small class="form-text text-danger">CNPJ inv&aacute;lido.</small>
 		}
 		@if (isLoadingCnpj) {
 			<small class="form-text">Buscando CNPJ...</small>
@@ -16,6 +19,9 @@
 	<div class="mb-3">
 		<label for="companyName" class="form-label">Raz&atilde;o Social</label>
 		<input id="companyName" type="text" class="form-control" formControlName="companyName" />
+		@if (clientForm.controls.companyName.touched && clientForm.controls.companyName.hasError('required')) {
+			<small class="form-text text-danger">Raz&atilde;o Social obrigat&oacute;ria.</small>
+		}
 	</div>
 
 	<app-endereco />
@@ -23,6 +29,9 @@
 	<div class="mb-3">
 		<label for="email" class="form-label">E-mail</label>
 		<input id="email" type="email" class="form-control" formControlName="email" />
+		@if (clientForm.controls.email.touched && clientForm.controls.email.hasError('email')) {
+			<small class="form-text text-danger">E-mail inv&aacute;lido.</small>
+		}
 	</div>
 
 	<div class="row">
@@ -40,4 +49,8 @@
 	<div class="form-actions">
 		<button type="submit" class="btn save-action">Salvar</button>
 	</div>
+
+	@if (saveError) {
+		<small class="form-text text-danger">{{ saveError }}</small>
+	}
 </form>

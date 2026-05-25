@@ -40,7 +40,7 @@ export class EnderecoComponent {
         this.isLoadingCep = false;
       },
       error: (error: Error) => {
-        this.cepError = error.message || 'Nao foi possivel buscar o CEP.';
+        this.cepError = error.message || 'N\u00e3o foi poss\u00edvel buscar o CEP.';
         this.isLoadingCep = false;
       },
     });

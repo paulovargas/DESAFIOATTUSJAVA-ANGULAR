@@ -5,6 +5,7 @@ import { Debtor } from '../../models/debtor.model';
 import { DebtorService } from '../../services/debtor.service';
 import { EnderecoComponent } from '../../../../shared/components/endereco/endereco.component';
 import { CnpjService } from '../../../../shared/services/cnpj.service';
+import { apiErrorMessage } from '../../../../shared/services/api-error.util';
 import { cpfCnpjValidator, onlyNumbers } from '../../../../shared/validators/document.validators';
 
 @Component({
@@ -21,6 +22,7 @@ export class FormDebtorComponent {
   private readonly activeModal = inject(NgbActiveModal);
   isLoadingCnpj = false;
   cnpjError = '';
+  saveError = '';
 
   readonly debtorForm = this.formBuilder.group({
     id: [0],
@@ -59,6 +61,8 @@ export class FormDebtorComponent {
   }
 
   onSubmit() {
+    this.saveError = '';
+
     if (this.debtorForm.invalid) {
       this.debtorForm.markAllAsTouched();
       return;
@@ -69,7 +73,12 @@ export class FormDebtorComponent {
       ? this.debtorService.update(id, debtor as Debtor)
       : this.debtorService.create(debtor as Debtor);
 
-    request$.subscribe(() => this.activeModal.close('saved'));
+    request$.subscribe({
+      next: () => this.activeModal.close('saved'),
+      error: (error) => {
+        this.saveError = apiErrorMessage(error, 'N\u00e3o foi poss\u00edvel salvar o devedor.');
+      },
+    });
   }
 
   buscarCnpj() {
@@ -101,7 +110,7 @@ export class FormDebtorComponent {
         this.isLoadingCnpj = false;
       },
       error: (error: Error) => {
-        this.cnpjError = error.message || 'Nao foi possivel buscar o CNPJ.';
+        this.cnpjError = error.message || 'N\u00e3o foi poss\u00edvel buscar o CNPJ.';
         this.isLoadingCnpj = false;
       },
     });

@@ -8,6 +8,7 @@ import { Debtor } from '../../../Debtor/models/debtor.model';
 import { DebtorService } from '../../../Debtor/services/debtor.service';
 import { Debt } from '../../models/debt.model';
 import { DebtService } from '../../services/debt.service';
+import { apiErrorMessage } from '../../../../shared/services/api-error.util';
 
 @Component({
   selector: 'app-form-debt',
@@ -25,6 +26,7 @@ export class FormDebtComponent {
 
   readonly clients$ = this.clientService.findAll();
   readonly debtors$ = this.debtorService.findAll();
+  saveError = '';
 
   readonly emptyClient: Client = {
     id: '',
@@ -88,6 +90,8 @@ export class FormDebtComponent {
   }
 
   onSubmit() {
+    this.saveError = '';
+
     if (this.debtForm.invalid) {
       this.debtForm.markAllAsTouched();
       return;
@@ -106,7 +110,12 @@ export class FormDebtComponent {
       ? this.debtService.update(debt.id, payload)
       : this.debtService.create(payload);
 
-    request$.subscribe(() => this.activeModal.close('saved'));
+    request$.subscribe({
+      next: () => this.activeModal.close('saved'),
+      error: (error) => {
+        this.saveError = apiErrorMessage(error, 'N\u00e3o foi poss\u00edvel salvar a d\u00edvida.');
+      },
+    });
   }
 
   private static selectedEntityValidator(control: AbstractControl): ValidationErrors | null {

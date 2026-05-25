@@ -2,6 +2,9 @@
 	<div class="mb-3">
 		<label for="description" class="form-label">Descrição</label>
 		<input id="description" type="text" class="form-control" formControlName="description" />
+		@if (debtForm.controls.description.touched && debtForm.controls.description.hasError('required')) {
+			<small class="form-text text-danger">Descri&ccedil;&atilde;o obrigat&oacute;ria.</small>
+		}
 	</div>
 
 	<div class="row">
@@ -36,11 +39,17 @@
 		<div class="col-md-4 mb-3">
 			<label for="amount" class="form-label">Valor</label>
 			<input id="amount" type="number" min="0.01" step="0.01" class="form-control" formControlName="amount" />
+			@if (debtForm.controls.amount.touched && debtForm.controls.amount.invalid) {
+				<small class="form-text text-danger">Valor deve ser maior que zero.</small>
+			}
 		</div>
 
 		<div class="col-md-4 mb-3">
 			<label for="dueDate" class="form-label">Vencimento</label>
 			<input id="dueDate" type="date" class="form-control" formControlName="dueDate" />
+			@if (debtForm.controls.dueDate.touched && debtForm.controls.dueDate.hasError('required')) {
+				<small class="form-text text-danger">Vencimento obrigat&oacute;rio.</small>
+			}
 		</div>
 
 		<div class="col-md-4 mb-3">
@@ -57,4 +66,8 @@
 	<div class="form-actions">
 		<button type="submit" class="btn save-action">Salvar</button>
 	</div>
+
+	@if (saveError) {
+		<small class="form-text text-danger">{{ saveError }}</small>
+	}
 </form>

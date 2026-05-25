@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface ReceitaWsResponse {
   status: 'OK' | 'ERROR';
@@ -36,7 +37,7 @@ export interface Empresa {
   providedIn: 'root'
 })
 export class CnpjService {
-  private readonly apiUrl = 'http://localhost:8080/api/cnpj';
+  private readonly apiUrl = `${environment.apiBaseUrl}/cnpj`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -44,13 +45,13 @@ export class CnpjService {
     const cnpjLimpo = this.limparCnpj(cnpj);
 
     if (cnpjLimpo.length !== 14) {
-      return throwError(() => new Error('CNPJ deve conter 14 digitos.'));
+      return throwError(() => new Error('CNPJ deve conter 14 d\u00edgitos.'));
     }
 
     return this.http.get<ReceitaWsResponse>(`${this.apiUrl}/${cnpjLimpo}`).pipe(
       map((response) => {
         if (response.status === 'ERROR') {
-          throw new Error(response.message || 'CNPJ nao encontrado.');
+          throw new Error(response.message || 'CNPJ n\u00e3o encontrado.');
         }
 
         return {
