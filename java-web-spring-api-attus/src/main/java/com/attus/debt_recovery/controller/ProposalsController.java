@@ -3,7 +3,6 @@ package com.attus.debt_recovery.controller;
 import com.attus.debt_recovery.dto.ProposalsDTO;
 import com.attus.debt_recovery.service.ProposalsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/proposals")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class ProposalsController {
 

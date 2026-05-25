@@ -1,10 +1,10 @@
 package com.attus.debt_recovery.dto;
 
+import com.attus.debt_recovery.validation.ValidCpfCnpj;
 import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ public class DebtorDTO {
     @NotBlank
     private String name;
     @NotBlank
-    @Pattern(regexp = "\\D*((\\d\\D*){11}|(\\d\\D*){14})", message = "CPF/CNPJ deve conter 11 ou 14 digitos.")
+    @ValidCpfCnpj
     private String cpfCnpj;
     @Email
     private String email;

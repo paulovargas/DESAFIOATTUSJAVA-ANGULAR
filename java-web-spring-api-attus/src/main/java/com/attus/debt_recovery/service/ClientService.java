@@ -2,9 +2,11 @@ package com.attus.debt_recovery.service;
 
 import com.attus.debt_recovery.dto.ClientDTO;
 import com.attus.debt_recovery.entity.Client;
+import com.attus.debt_recovery.exception.ResourceNotFoundException;
 import com.attus.debt_recovery.mapper.ClientMapper;
 import com.attus.debt_recovery.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ClientService {
 
     private final ClientRepository clientRepository;
@@ -26,18 +29,20 @@ public class ClientService {
 
     public ClientDTO findById(Long id){
         Client client = clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente nao encontrado."));
         return mapper.toDTO(client);
     }
 
     public ClientDTO create(ClientDTO dto){
         Client client = mapper.toEntity(dto);
-        return mapper.toDTO(clientRepository.save(client));
+        Client saved = clientRepository.save(client);
+        log.info("Cliente criado com id={}", saved.getId());
+        return mapper.toDTO(saved);
     }
 
     public ClientDTO update(Long id, ClientDTO dto){
         Client existing = clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente nao encontrado."));
 
         existing.setCompanyName(dto.getCompanyName());
         existing.setCnpj(dto.getCnpj());
@@ -51,8 +56,15 @@ public class ClientService {
         existing.setContactName(dto.getContactName());
         existing.setPhone(dto.getPhone());
 
-        return mapper.toDTO(clientRepository.save(existing));
+        Client saved = clientRepository.save(existing);
+        log.info("Cliente atualizado com id={}", saved.getId());
+        return mapper.toDTO(saved);
     }
 
-    public void delete(Long id){ clientRepository.deleteById(id);}
+    public void delete(Long id){
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente nao encontrado."));
+        clientRepository.delete(client);
+        log.info("Cliente excluido com id={}", id);
+    }
 }

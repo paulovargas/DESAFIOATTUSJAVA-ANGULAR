@@ -3,9 +3,11 @@ package com.attus.debt_recovery.service;
 import com.attus.debt_recovery.dto.ProposalsDTO;
 import com.attus.debt_recovery.entity.Debt;
 import com.attus.debt_recovery.entity.Proposals;
+import com.attus.debt_recovery.exception.ResourceNotFoundException;
 import com.attus.debt_recovery.repository.DebtRepository;
 import com.attus.debt_recovery.repository.ProposalsRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProposalsService {
 
     private final ProposalsRepository proposalsRepository;
@@ -39,7 +42,9 @@ public class ProposalsService {
                 .createdAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : LocalDate.now())
                 .build();
 
-        return toDTO(proposalsRepository.save(proposal));
+        Proposals saved = proposalsRepository.save(proposal);
+        log.info("Proposta criada com id={}, debtId={}", saved.getId(), saved.getDebt().getId());
+        return toDTO(saved);
     }
 
     public ProposalsDTO update(Long id, ProposalsDTO dto) {
@@ -53,21 +58,24 @@ public class ProposalsService {
         proposal.setStatus(dto.getStatus());
         proposal.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : proposal.getCreatedAt());
 
-        return toDTO(proposalsRepository.save(proposal));
+        Proposals saved = proposalsRepository.save(proposal);
+        log.info("Proposta atualizada com id={}", saved.getId());
+        return toDTO(saved);
     }
 
     public void delete(Long id) {
         proposalsRepository.delete(findEntityById(id));
+        log.info("Proposta excluida com id={}", id);
     }
 
     private Proposals findEntityById(Long id) {
         return proposalsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Proposal not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Proposta nao encontrada."));
     }
 
     private Debt findDebtById(Long id) {
         return debtRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Debt not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Divida nao encontrada."));
     }
 
     private ProposalsDTO toDTO(Proposals proposal) {

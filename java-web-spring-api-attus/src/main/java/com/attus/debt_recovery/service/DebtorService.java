@@ -3,9 +3,11 @@ package com.attus.debt_recovery.service;
 import com.attus.debt_recovery.dto.DebtorDTO;
 import com.attus.debt_recovery.entity.Debt;
 import com.attus.debt_recovery.entity.Debtor;
+import com.attus.debt_recovery.exception.ResourceNotFoundException;
 import com.attus.debt_recovery.mapper.DebtorMapper;
 import com.attus.debt_recovery.repository.DebtorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DebtorService {
 
     private final DebtorRepository debtorRepository;
@@ -27,18 +30,20 @@ public class DebtorService {
 
     public DebtorDTO findById(Long id){
         Debtor debtor = debtorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Debtor not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Devedor nao encontrado."));
         return mapper.toDTO(debtor);
     }
 
     public DebtorDTO create(DebtorDTO dto){
         Debtor debtor = mapper.toEntity(dto);
-        return mapper.toDTO(debtorRepository.save(debtor));
+        Debtor saved = debtorRepository.save(debtor);
+        log.info("Devedor criado com id={}", saved.getId());
+        return mapper.toDTO(saved);
     }
 
     public DebtorDTO update(Long id, DebtorDTO dto){
         Debtor existing = debtorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Debtor not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Devedor nao encontrado."));
 
         existing.setName(dto.getName());
         existing.setCpfCnpj(dto.getCpfCnpj());
@@ -51,8 +56,15 @@ public class DebtorService {
         existing.setBillingState(dto.getBillingState());
         existing.setBillingZipCode(dto.getBillingZipCode());
 
-        return mapper.toDTO(debtorRepository.save(existing));
+        Debtor saved = debtorRepository.save(existing);
+        log.info("Devedor atualizado com id={}", saved.getId());
+        return mapper.toDTO(saved);
     }
 
-    public void delete(Long id){ debtorRepository.deleteById(id); }
+    public void delete(Long id){
+        Debtor debtor = debtorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Devedor nao encontrado."));
+        debtorRepository.delete(debtor);
+        log.info("Devedor excluido com id={}", id);
+    }
 }

@@ -1,7 +1,6 @@
 package com.attus.debt_recovery.controller;
 
 import com.attus.debt_recovery.dto.DebtorDTO;
-import com.attus.debt_recovery.entity.Debt;
 import com.attus.debt_recovery.service.DebtorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/debitors")
-@CrossOrigin(origins = "*")
+@RequestMapping({"/api/debtors", "/api/debitors"})
 @RequiredArgsConstructor
 public class DebtorController {
 

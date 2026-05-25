@@ -9,6 +9,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class CnpjService {
@@ -16,6 +18,7 @@ public class CnpjService {
     private static final String RECEITA_WS_URL = "https://www.receitaws.com.br/v1/cnpj/";
 
     private final RestTemplate restTemplate;
+    private final Map<String, CnpjResponseDTO> cache = new ConcurrentHashMap<>();
 
     public CnpjService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder
@@ -31,11 +34,19 @@ public class CnpjService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CNPJ deve conter 14 digitos.");
         }
 
+        if (cache.containsKey(cnpjLimpo)) {
+            return cache.get(cnpjLimpo);
+        }
+
         try {
             CnpjResponseDTO response = restTemplate.getForObject(RECEITA_WS_URL + cnpjLimpo, CnpjResponseDTO.class);
 
             if (response == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Resposta vazia da ReceitaWS.");
+            }
+
+            if (!"ERROR".equals(response.getStatus())) {
+                cache.put(cnpjLimpo, response);
             }
 
             return response;
