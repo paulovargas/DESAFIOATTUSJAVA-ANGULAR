@@ -11,6 +11,12 @@
 			/>
 		</div>
 
+		<select class="form-select page-size-select" name="clientSort" [(ngModel)]="sortBy">
+			<option value="companyName">Ordenar por raz&atilde;o social</option>
+			<option value="cnpj">Ordenar por CNPJ</option>
+			<option value="id">Ordenar por c&oacute;digo</option>
+		</select>
+
 		<button type="button" class="btn client-action" (click)="openFormClient()">Cadastrar Cliente</button>
 	</div>
 
@@ -28,7 +34,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@for (client of filteredClients$ | async; track client.id) {
+					@for (client of paginatedClients$ | async; track client.id) {
 						<tr>
 							<th scope="row">{{ client.id }}</th>
 							<td><ngb-highlight [result]="client.companyName" [term]="searchTerm" /></td>
@@ -50,11 +56,13 @@
 	</div>
 
 	<div class="client-pagination">
-		<ngb-pagination [collectionSize]="(filteredClients$ | async)?.length || 0" [page]="1" [pageSize]="10">
+		<ngb-pagination [collectionSize]="(totalClients$ | async) || 0" [(page)]="page" [pageSize]="pageSize">
 		</ngb-pagination>
 
-		<select class="form-select page-size-select" name="pageSize">
+		<select class="form-select page-size-select" name="pageSize" [(ngModel)]="pageSize">
 			<option [ngValue]="10">10 itens por p&aacute;gina</option>
+			<option [ngValue]="25">25 itens por p&aacute;gina</option>
+			<option [ngValue]="50">50 itens por p&aacute;gina</option>
 		</select>
 	</div>
 </form>

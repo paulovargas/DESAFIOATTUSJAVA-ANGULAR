@@ -18,9 +18,15 @@ import { ClientService } from '../../services/client.service';
 export class ClientPageComponent {
   private readonly refresh$ = new BehaviorSubject<void>(undefined);
   private readonly searchTerm$ = new BehaviorSubject<string>('');
+  private readonly sortBy$ = new BehaviorSubject<string>('companyName');
+  private readonly page$ = new BehaviorSubject<number>(1);
+  private readonly pageSize$ = new BehaviorSubject<number>(10);
 
   clients$: Observable<Client[]>;
   filteredClients$: Observable<Client[]>;
+  sortedClients$: Observable<Client[]>;
+  paginatedClients$: Observable<Client[]>;
+  totalClients$: Observable<number>;
 
 	constructor(
     private clientService: ClientService,
@@ -30,6 +36,16 @@ export class ClientPageComponent {
     this.filteredClients$ = combineLatest([this.clients$, this.searchTerm$]).pipe(
       map(([clients, searchTerm]) => this.filterClients(clients, searchTerm))
     );
+    this.sortedClients$ = combineLatest([this.filteredClients$, this.sortBy$]).pipe(
+      map(([clients, sortBy]) => this.sortClients(clients, sortBy))
+    );
+    this.paginatedClients$ = combineLatest([this.sortedClients$, this.page$, this.pageSize$]).pipe(
+      map(([clients, page, pageSize]) => {
+        const start = (page - 1) * pageSize;
+        return clients.slice(start, start + pageSize);
+      })
+    );
+    this.totalClients$ = this.filteredClients$.pipe(map((clients) => clients.length));
 	}
 
   get searchTerm(): string {
@@ -38,12 +54,39 @@ export class ClientPageComponent {
 
   set searchTerm(searchTerm: string) {
     this.searchTerm$.next(searchTerm);
+    this.page$.next(1);
+  }
+
+  get page(): number {
+    return this.page$.value;
+  }
+
+  set page(page: number) {
+    this.page$.next(page);
+  }
+
+  get pageSize(): number {
+    return this.pageSize$.value;
+  }
+
+  set pageSize(pageSize: number) {
+    this.pageSize$.next(Number(pageSize));
+    this.page$.next(1);
+  }
+
+  get sortBy(): string {
+    return this.sortBy$.value;
+  }
+
+  set sortBy(sortBy: string) {
+    this.sortBy$.next(sortBy);
+    this.page$.next(1);
   }
 
   openFormClient(client?: Client) {
 		const modalRef = this.modalService.open(
       FormClientComponent,
-      client ? 'Edicao de Cliente' : 'Cadastro de Cliente',
+      client ? 'Edi\u00e7\u00e3o de Cliente' : 'Cadastro de Cliente',
 	    { client }
     );
 
@@ -80,5 +123,17 @@ export class ClientPageComponent {
 
   private onlyNumbers(value: string): string {
     return value.replace(/\D/g, '');
+  }
+
+  private sortClients(clients: Client[], sortBy: string): Client[] {
+    return [...clients].sort((first, second) => {
+      if (sortBy === 'id') {
+        return Number(first.id) - Number(second.id);
+      }
+
+      const firstValue = String(first[sortBy as keyof Client] || '').toLowerCase();
+      const secondValue = String(second[sortBy as keyof Client] || '').toLowerCase();
+      return firstValue.localeCompare(secondValue);
+    });
   }
 }

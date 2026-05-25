@@ -1,15 +1,16 @@
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BehaviorSubject, switchMap } from 'rxjs';
+import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
 
 import { DebtService } from '../../../Debt/services/debt.service';
+import { apiErrorMessage } from '../../../../shared/services/api-error.util';
 import { Proposal } from '../../models/proposal.model';
 import { ProposalPayload, ProposalService } from '../../services/proposal.service';
 
 @Component({
   selector: 'app-proposals-page',
-  imports: [AsyncPipe, CurrencyPipe, ReactiveFormsModule],
+  imports: [AsyncPipe, CurrencyPipe, FormsModule, ReactiveFormsModule],
   templateUrl: './proposals-page.component.html',
   styleUrls: ['./proposals-page.component.css']
 })
@@ -18,11 +19,54 @@ export class ProposalsPageComponent {
   private readonly proposalService = inject(ProposalService);
   private readonly debtService = inject(DebtService);
   private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly searchTerm$ = new BehaviorSubject<string>('');
+  private readonly sortBy$ = new BehaviorSubject<string>('createdAt');
 
   readonly proposals$ = this.refresh$.pipe(switchMap(() => this.proposalService.findAll()));
+  readonly filteredProposals$ = combineLatest([this.proposals$, this.searchTerm$, this.sortBy$]).pipe(
+    map(([proposals, searchTerm, sortBy]) => {
+      const term = searchTerm.trim().toLowerCase();
+      let result = proposals;
+
+      if (term) {
+        result = proposals.filter((proposal) =>
+          proposal.debtorName?.toLowerCase().includes(term) ||
+          proposal.debtDescription?.toLowerCase().includes(term) ||
+          proposal.status?.toLowerCase().includes(term)
+        );
+      }
+
+      return [...result].sort((first, second) => {
+        if (sortBy === 'offeredAmount' || sortBy === 'installments' || sortBy === 'id') {
+          return Number(first[sortBy as keyof Proposal]) - Number(second[sortBy as keyof Proposal]);
+        }
+
+        return String(first[sortBy as keyof Proposal] || '')
+          .toLowerCase()
+          .localeCompare(String(second[sortBy as keyof Proposal] || '').toLowerCase());
+      });
+    })
+  );
   readonly debts$ = this.debtService.findAll();
 
   editingProposalId: number | null = null;
+  formError = '';
+
+  get searchTerm(): string {
+    return this.searchTerm$.value;
+  }
+
+  set searchTerm(searchTerm: string) {
+    this.searchTerm$.next(searchTerm);
+  }
+
+  get sortBy(): string {
+    return this.sortBy$.value;
+  }
+
+  set sortBy(sortBy: string) {
+    this.sortBy$.next(sortBy);
+  }
 
   readonly proposalForm = this.formBuilder.group({
     debtId: [0, [Validators.required, Validators.min(1)]],
@@ -33,6 +77,8 @@ export class ProposalsPageComponent {
   });
 
   saveProposal() {
+    this.formError = '';
+
     if (this.proposalForm.invalid) {
       this.proposalForm.markAllAsTouched();
       return;
@@ -43,9 +89,14 @@ export class ProposalsPageComponent {
       ? this.proposalService.update(this.editingProposalId, payload)
       : this.proposalService.create(payload);
 
-    request$.subscribe(() => {
-      this.resetForm();
-      this.refresh$.next();
+    request$.subscribe({
+      next: () => {
+        this.resetForm();
+        this.refresh$.next();
+      },
+      error: (error) => {
+        this.formError = apiErrorMessage(error, 'N\u00e3o foi poss\u00edvel salvar a proposta.');
+      },
     });
   }
 
@@ -61,11 +112,18 @@ export class ProposalsPageComponent {
   }
 
   deleteProposal(id: number) {
-    this.proposalService.delete(id).subscribe(() => this.refresh$.next());
+    this.formError = '';
+    this.proposalService.delete(id).subscribe({
+      next: () => this.refresh$.next(),
+      error: (error) => {
+        this.formError = apiErrorMessage(error, 'N\u00e3o foi poss\u00edvel excluir a proposta.');
+      },
+    });
   }
 
   resetForm() {
     this.editingProposalId = null;
+    this.formError = '';
     this.proposalForm.reset({
       debtId: 0,
       offeredAmount: 0,

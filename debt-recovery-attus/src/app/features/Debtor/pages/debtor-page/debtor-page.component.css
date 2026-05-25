@@ -96,9 +96,27 @@
 	color: #fff;
 }
 
+.page-search {
+	background: rgba(15, 17, 21, .85);
+	border-color: var(--border-color);
+	color: var(--text-color);
+	max-width: 360px;
+}
+
+.page-search:focus {
+	background: rgba(15, 17, 21, .95);
+	border-color: var(--primary);
+	box-shadow: 0 0 0 .2rem rgba(124, 58, 237, .25);
+	color: var(--text-color);
+}
+
 @media (max-width: 768px) {
 	.page-panel {
 		align-items: stretch;
 		flex-direction: column;
+	}
+
+	.page-search {
+		max-width: none;
 	}
 }

@@ -33,7 +33,7 @@ export class HomePageComponent {
         startWith({ loading: true } as DashboardViewState),
         catchError(() =>
           of({
-            error: 'Nao foi possivel carregar os indicadores do dashboard.',
+            error: 'N\u00e3o foi poss\u00edvel carregar os indicadores do dashboard.',
             loading: false,
           } as DashboardViewState)
         )
@@ -77,13 +77,13 @@ export class HomePageComponent {
 
   mainFocus(dashboard: Dashboard) {
     if (dashboard.overdueDebts > 0) {
-      return `${dashboard.overdueDebts} dividas vencidas precisam de priorizacao.`;
+      return `${dashboard.overdueDebts} d\u00edvidas vencidas precisam de prioriza\u00e7\u00e3o.`;
     }
 
     if (dashboard.analysisProposals > 0) {
-      return `${dashboard.analysisProposals} propostas aguardam analise.`;
+      return `${dashboard.analysisProposals} propostas aguardam an\u00e1lise.`;
     }
 
-    return 'Carteira sem pendencias criticas no momento.';
+    return 'Carteira sem pend\u00eancias cr\u00edticas no momento.';
   }
 }

@@ -4,6 +4,21 @@
 		<p>Cadastre e acompanhe os valores em cobran&ccedil;a.</p>
 	</div>
 
+	<input
+		type="text"
+		class="form-control page-search"
+		name="debtSearch"
+		placeholder="Buscar por descri&ccedil;&atilde;o, cliente, devedor ou status"
+		[(ngModel)]="searchTerm"
+	/>
+
+	<select class="form-select page-search" name="debtSort" [(ngModel)]="sortBy">
+		<option value="dueDate">Ordenar por vencimento</option>
+		<option value="amount">Ordenar por valor</option>
+		<option value="status">Ordenar por status</option>
+		<option value="id">Ordenar por c&oacute;digo</option>
+	</select>
+
 	<button type="button" class="btn page-action" (click)="openFormDebt()">Cadastrar D&iacute;vida</button>
 </section>
 
@@ -23,7 +38,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for (debt of debts$ | async; track debt.id) {
+				@for (debt of filteredDebts$ | async; track debt.id) {
 					<tr>
 						<th scope="row">{{ debt.id }}</th>
 						<td>{{ debt.description }}</td>

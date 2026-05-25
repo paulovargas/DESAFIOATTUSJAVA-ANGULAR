@@ -4,6 +4,20 @@
 		<p>Gerencie os devedores vinculados &agrave;s cobran&ccedil;as.</p>
 	</div>
 
+	<input
+		type="text"
+		class="form-control page-search"
+		name="debtorSearch"
+		placeholder="Buscar por nome ou CPF/CNPJ"
+		[(ngModel)]="searchTerm"
+	/>
+
+	<select class="form-select page-search" name="debtorSort" [(ngModel)]="sortBy">
+		<option value="name">Ordenar por nome</option>
+		<option value="cpfCnpj">Ordenar por CPF/CNPJ</option>
+		<option value="id">Ordenar por c&oacute;digo</option>
+	</select>
+
 	<button type="button" class="btn page-action" (click)="openFormDebtor()">Cadastrar Devedor</button>
 </section>
 
@@ -23,7 +37,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for (debtor of debtors$ | async; track debtor.id) {
+				@for (debtor of filteredDebtors$ | async; track debtor.id) {
 					<tr>
 						<th scope="row">{{ debtor.id }}</th>
 						<td>{{ debtor.name }}</td>
