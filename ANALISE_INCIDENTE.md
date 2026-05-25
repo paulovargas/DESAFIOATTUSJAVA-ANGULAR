@@ -1,17 +1,17 @@
-# Analise de Incidente
+# Análise de Incidente
 
-## Cenario
+## Cenário
 
-Usuarios relatam erro recorrente ao cadastrar uma nova divida. A tela permite preencher descricao, valor, vencimento e status, mas o registro nao aparece na listagem apos salvar.
+Usuários relatam erro recorrente ao cadastrar uma nova dívida. A tela permite preencher descrição, valor, vencimento e status, mas o registro não aparece na listagem após salvar.
 
 ## Sintomas
 
-- O clique em "Salvar" nao persiste a divida.
-- A listagem permanece sem alteracao.
-- No navegador, a acao aparece apenas no console local quando o formulario nao chama a API.
-- No backend, nao ha requisicao `POST /api/debts` correspondente.
+- O clique em "Salvar" não persiste a dívida.
+- A listagem permanece sem alteração.
+- No navegador, a ação aparece apenas no console local quando o formulário não chama a API.
+- No backend, não há requisição `POST /api/debts` correspondente.
 
-## Evidencias esperadas em logs
+## Evidências esperadas em logs
 
 Frontend:
 
@@ -22,33 +22,33 @@ POST http://localhost:8080/api/debts
 Backend:
 
 ```text
-Creating debt: description=<descricao>, amount=<valor>, clientId=<id>, debtorId=<id>
+Creating debt: description=<descrição>, amount=<valor>, clientId=<id>, debtorId=<id>
 Debt created with id=<id>
 ```
 
-Quando a requisicao nao chega ao backend, a causa esta no fluxo do frontend ou na configuracao de rede entre frontend e API.
+Quando a requisição não chega ao backend, a causa está no fluxo do frontend ou na configuração de rede entre frontend e API.
 
 ## Causa raiz
 
-O formulario de divida estava validando campos e montando o objeto, mas nao chamava `DebtService.create`. Assim, nenhum `POST` era enviado para a API.
+O formulário de dívida estava validando campos e montando o objeto, mas não chamava `DebtService.create`. Assim, nenhum `POST` era enviado para a API.
 
-Tambem havia risco de uma divida ser enviada sem cliente e devedor selecionados, impedindo um cadastro completo para o dominio de recuperacao de credito.
+Também havia risco de uma dívida ser enviada sem cliente e devedor selecionados, impedindo um cadastro completo para o domínio de recuperação de crédito.
 
-## Correcao aplicada
+## Correção aplicada
 
-- O formulario passou a carregar clientes e devedores via services.
-- Foram adicionados campos de selecao para cliente e devedor.
+- O formulário passou a carregar clientes e devedores via services.
+- Foram adicionados campos de seleção para cliente e devedor.
 - O submit passou a chamar `DebtService.create`.
 - Ao salvar, o modal fecha com resultado `saved`.
-- A pagina recarrega a listagem quando o modal informa sucesso.
+- A página recarrega a listagem quando o modal informa sucesso.
 
 ## Prevencao
 
 - Cobrir o fluxo com teste de componente no Angular, validando que o submit chama o service.
-- Cobrir `POST /api/debts` com teste de integracao no backend.
-- Adicionar logs no backend para criacao, atualizacao e falhas de validacao.
-- Retornar erros padronizados quando cliente ou devedor forem invalidos.
+- Cobrir `POST /api/debts` com teste de integração no backend.
+- Adicionar logs no backend para criação, atualização e falhas de validação.
+- Retornar erros padronizados quando cliente ou devedor forem inválidos.
 
 ## Status atual
 
-O cadastro de divida foi corrigido para chamar a API e recarregar a listagem apos salvar. Tambem foram adicionadas validacoes para impedir envio sem cliente ou devedor selecionado. Ainda falta um teste de integracao especifico para `POST /api/debts`, registrado em `PENDENCIAS.md`.
+O cadastro de dívida foi corrigido para chamar a API e recarregar a listagem após salvar. Também foram adicionadas validações para impedir envio sem cliente ou devedor selecionado. O endpoint `POST /api/debts` passou a ser coberto por teste de integração no backend.
