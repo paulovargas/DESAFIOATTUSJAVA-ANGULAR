@@ -1,6 +1,6 @@
 # Debt Recovery Attus
 
-Sistema para cadastro e acompanhamento de clientes, devedores, dividas, propostas de negociacao e indicadores de recuperacao.
+Sistema para cadastro e acompanhamento de clientes, devedores, dívidas, propostas de negociação e indicadores de recuperação.
 
 ## Stack
 
@@ -16,7 +16,7 @@ Na raiz do projeto:
 docker-compose -f docker-compose.dev.yml up --build
 ```
 
-Servicos:
+Serviços:
 
 - Frontend: http://localhost:4200
 - API: http://localhost:8080
@@ -24,7 +24,7 @@ Servicos:
 - OpenAPI JSON: http://localhost:8080/api-docs
 - PostgreSQL: localhost:5432
 
-O `docker-compose.dev.yml` tambem possui servicos de backup e restore do PostgreSQL. O backup e gerado em `java-web-spring-api-attus/database/backups/debt_recovery_db.backup`.
+O `docker-compose.dev.yml` também possui serviços de backup e restore do PostgreSQL. O backup é gerado em `java-web-spring-api-attus/database/backups/debt_recovery_db.backup`.
 
 ## Executando localmente
 
@@ -57,10 +57,10 @@ npm start
 - `PUT /api/clients/{id}`
 - `DELETE /api/clients/{id}`
 - `GET /api/cnpj/{cnpj}`
-- `GET /api/debitors`
-- `POST /api/debitors`
-- `PUT /api/debitors/{id}`
-- `DELETE /api/debitors/{id}`
+- `GET /api/debtors`
+- `POST /api/debtors`
+- `PUT /api/debtors/{id}`
+- `DELETE /api/debtors/{id}`
 - `GET /api/debts`
 - `GET /api/debts/debtor/{id}`
 - `POST /api/debts`
@@ -71,9 +71,9 @@ npm start
 - `PUT /api/proposals/{id}`
 - `DELETE /api/proposals/{id}`
 
-Observacao: o endpoint de devedores foi mantido como `/api/debitors` para compatibilidade com o codigo atual.
+Observação: `/api/debitors` continua aceito como alias de compatibilidade, mas o frontend usa `/api/debtors`.
 
-## Validacao
+## Validação
 
 Comandos usados para validar o projeto:
 
@@ -92,25 +92,31 @@ cd debt-recovery-attus
 node ./node_modules/@angular/cli/bin/ng.js test --watch=false --karma-config=karma.conf.js --browsers=ChromeHeadlessNoGpu
 ```
 
-Na ultima validacao local:
+Na última validação local:
 
-- Backend: 6 testes executados com sucesso.
-- Frontend: 23 testes executados com sucesso.
+- Backend: 14 testes executados com sucesso.
+- Frontend: 21 testes executados com sucesso.
 
 ## Funcionalidades implementadas
 
-- Cadastro, edicao, listagem e exclusao de clientes.
-- Cadastro, edicao, listagem e exclusao de devedores.
-- Cadastro, edicao, listagem e exclusao de dividas com cliente e devedor vinculados.
-- Cadastro, edicao, listagem e exclusao de propostas.
+- Cadastro, edição, listagem e exclusão de clientes.
+- Cadastro, edição, listagem e exclusão de devedores.
+- Cadastro, edição, listagem e exclusão de dívidas com cliente e devedor vinculados.
+- Cadastro, edição, listagem e exclusão de propostas.
 - Dashboard com indicadores da carteira.
 - Consulta de CNPJ via backend, evitando chamada direta do navegador para a ReceitaWS.
-- Validacao de CPF/CNPJ no frontend e validacoes basicas no backend.
-- Busca de clientes por razao social ou CNPJ.
-- Testes unitarios no frontend e backend.
+- Consulta de CNPJ com cache simples no backend.
+- Validação de CPF/CNPJ no frontend e no backend.
+- Busca de clientes por razão social ou CNPJ, com paginação real e ordenação.
+- Filtros nas telas de devedores, dívidas e propostas.
+- Ordenação nas telas de devedores, dívidas e propostas.
+- Mensagens visuais de campos obrigatórios e documentos inválidos nos formulários.
+- Respostas de erro padronizadas no backend e mensagens de falha no frontend.
+- Testes unitários no frontend e backend.
+- Testes de integração dos principais endpoints de criação, atualização, exclusão e falha.
 
-## Documentacao complementar
+## Documentação complementar
 
-- [Nota tecnica](NOTA_TECNICA.md)
-- [Analise de incidente](ANALISE_INCIDENTE.md)
+- [Nota técnica](NOTA_TECNICA.md)
+- [Análise de incidente](ANALISE_INCIDENTE.md)
 - [Pendencias](PENDENCIAS.md)
